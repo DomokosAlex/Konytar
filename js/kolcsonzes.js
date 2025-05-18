@@ -55,7 +55,7 @@ function MutatKartya() {
                     <img src="../img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
                         <h5 class="card-title">${e.cim}</h5>
-                        <button onclick="Torol(${e.id})" class="btn btn-danger">Delete</button>
+                        <button onclick="Torol(${e.id})" class="btn btn-danger">Törlés</button>
                     </div>
                 </div>
             `
@@ -73,6 +73,7 @@ function MutatKartya() {
                     </div>
                 </div>
             `
+        konyvtar.appendChild(konyvdiv);
 
 
         }
@@ -91,7 +92,7 @@ function MutatKartya() {
                     <img src="../img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
                         <h5 class="card-title">${e.cim}</h5>
-                        <button onclick="Kiveszem(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Visszaadom</button>
+                        <button onclick="Visszaadom(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Visszaadom</button>
                     </div>
                 </div>
             `
@@ -103,7 +104,6 @@ function MutatKartya() {
 
 
         admincont.appendChild(admindiv);
-        konyvtar.appendChild(konyvdiv);
 
     });
 
@@ -124,12 +124,24 @@ function Torol(id) {
 }
 
 function Kiveszem(id) {
-    document.getElementById(id).remove();
+    const torolni = document.getElementById(id);
+    torolni.remove();
 
-    const numericId = parseInt(id); // e.g. from "12konyv" -> 12
+    const numericId = parseInt(id); 
     const e = konyvtarolo[numericId];
     e.kivett = true;
 
     MutatKartya();
 }
 
+function Visszaadom(id){
+    document.getElementById(id).remove();
+
+    const numericId = parseInt(id); 
+    const e = konyvtarolo[numericId];
+    e.kivett = false;
+
+
+    MutatKartya();
+
+}

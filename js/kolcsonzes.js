@@ -57,7 +57,7 @@ function MutatKartya() {
         admindiv.innerHTML =
             `
                 <div class="card my-3" style="width: 14rem;">
-                    <img src="../img/${e.kep}.png" class="card-img-top" alt="konyv">
+                    <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
                         <h5 class="card-title">${e.cim}</h5>
                         <button onclick="Torol(${e.id})" class="btn btn-danger">Törlés</button>
@@ -73,7 +73,7 @@ function MutatKartya() {
             konyvdiv.innerHTML =
                 `
                 <div class="card my-3" style="width: 14rem;">
-                    <img src="../img/${e.kep}.png" class="card-img-top" alt="konyv">
+                    <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
                         <h5 class="card-title">${e.cim}</h5>
                         <button onclick="Kolcson(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Kiveszem</button>
@@ -93,7 +93,7 @@ function MutatKartya() {
             kolcsondiv.innerHTML =
                 `
                 <div class="card my-3" style="width: 14rem;">
-                    <img src="../img/${e.kep}.png" class="card-img-top" alt="konyv">
+                    <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
                         <h5 class="card-title">${e.cim}</h5>
                         <button onclick="Kolcson(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Visszaadom</button>

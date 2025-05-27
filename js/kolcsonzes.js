@@ -1,15 +1,16 @@
 class Konyv {
-    constructor(id, cim, dij, kep, kivett) {
+    constructor(id, cim, dij, kep, kivett, mennyiseg) {
 
         //kötelező
         this.id = id;
         this.cim = cim;
-        this.dij = dij;
+        this.dij = parseInt(dij);
 
         //magam adtam hozzá
         //csak egy szamot kell megadni (5,6) fedőképnek mert úgy van elnevezve a kép
         this.kep = kep;
-        this.kivett = kivett;
+        this.kivett = parseInt(kivett);
+        this.mennyiseg = parseInt(mennyiseg);
     }
 }
 
@@ -21,14 +22,33 @@ function addBook() {
     const cim = prompt("Cím:");
     const dij = prompt("Dij (Forint):");
     const kep = prompt("Fedő kép: ");
+    const mennyiseg = prompt("Mennyiség: ");
 
     //id-t ad neki, mivel 0 hosszuságu akkor 0 az elso id, utana 1 és tovább
     const id = konyvtarolo.length;
 
-    //példányositás
-    const konyv = new Konyv(id, cim, dij, kep, false);
+    var van = false;
+    var upindex = 0;
 
-    konyvtarolo.push(konyv)
+    for (let i = 0; i < konyvtarolo.length; i++) {
+        if (konyvtarolo[i].cim == cim) {
+            van = true;
+            upindex = i;
+            break;
+        }
+    }
+
+    if (van) {
+        konyvtarolo[upindex].mennyiseg += parseInt(mennyiseg);
+
+    } else {
+        const konyv = new Konyv(id, cim, dij, kep, 0, mennyiseg);
+        konyvtarolo.push(konyv);
+
+    }
+
+    //példányositás
+
 
     //kilistázza a kártyákat
     MutatKartya();
@@ -59,14 +79,16 @@ function MutatKartya() {
                 <div class="card my-3" style="width: 14rem;">
                     <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
-                        <h5 class="card-title">${e.cim}</h5>
+                        <h4 class="card-title">${e.cim}</h4>
+                        <h5 class="card-title">Dij: ${e.dij}</h5>
+                        <h5 class="card-title">Mennyiség: ${e.mennyiseg}</h5>
+
                         <button onclick="Torol(${e.id})" class="btn btn-danger">Törlés</button>
                     </div>
                 </div>
             `
         //ha nincs kivéve a könyv adja hozzá a választékhoz
-        if (!e.kivett) {
-
+       
             var konyvdiv = document.createElement("div");
             konyvdiv.className = "col-md-6 col-lg-3 d-flex justify-content-center";
             konyvdiv.id = e.id + "konyv";
@@ -75,17 +97,19 @@ function MutatKartya() {
                 <div class="card my-3" style="width: 14rem;">
                     <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
-                        <h5 class="card-title">${e.cim}</h5>
+                        <h4 class="card-title">${e.cim}</h4>
+                        <h5 class="card-title">Dij: ${e.dij}</h5>
+                        <h5 class="card-title">Mennyiség: ${e.mennyiseg}</h5>
                         <button onclick="Kolcson(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Kiveszem</button>
                     </div>
                 </div>
             `
             //DOM-ba beszurja a kártyát a könyvnek a tulajdonságaival
             konyvtar.appendChild(konyvdiv);
-        }
+        
 
         //ha ki van véve adja hozzá a ki kölcsonzötthöz
-        if (e.kivett) {
+        if (e.kivett > 0) {
             var kolcsondiv = document.createElement("div");
 
             kolcsondiv.className = "col-md-6 col-lg-3 d-flex justify-content-center";
@@ -95,8 +119,11 @@ function MutatKartya() {
                 <div class="card my-3" style="width: 14rem;">
                     <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
-                        <h5 class="card-title">${e.cim}</h5>
-                        <button onclick="Kolcson(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Visszaadom</button>
+                        <h4 class="card-title">${e.cim}</h4>
+                        <h5 class="card-title">Dij: ${e.dij}</h5>
+                        <h5 class="card-title">Kivett mennyisege: ${e.kivett}</h5>
+
+                        <button onclick="Visszaadom(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Visszaadom</button>
                     </div>
                 </div>
             `
@@ -118,8 +145,8 @@ function Dij() {
     var osszdij = 0;
     var van = false;
     konyvtarolo.forEach(e => {
-        if (e.kivett) {
-            osszdij += parseInt(e.dij);
+        if (e.kivett > 0) {
+            osszdij += parseInt(e.dij) * e.kivett;
             van = true;
         }
     });
@@ -134,6 +161,9 @@ function Dij() {
 function Torol(id) {
 
     //kitörli az adott könyvet
+
+
+    document.getElementById("kdij").innerHTML = "";
     document.getElementById(id).remove();
     document.getElementById(id + "konyv").remove();
 
@@ -148,13 +178,37 @@ function Torol(id) {
 
 function Kolcson(id) {
 
+    //beállitja azt hogy ki van véve/vissza lett adva és frissiti a könyveket 
+    const numericId = parseInt(id);
+    const e = konyvtarolo[numericId];
+
+    if (e.mennyiseg > 0) {
+        e.mennyiseg--;
+        e.kivett++;
+    } else {
+        alert("Nincs több példány elérhető.");
+    }
+
+    MutatKartya();
+}
+
+
+
+
+function Visszaadom(id) {
+
     //törli a választékból
-    const torolni = document.getElementById(id);
-    torolni.remove();
 
     //beállitja azt hogy ki van véve/vissza lett adva és frissiti a könyveket 
     const numericId = parseInt(id);
     const e = konyvtarolo[numericId];
-    e.kivett = !e.kivett;
+
+    if (e.kivett > 0) {
+        e.mennyiseg++;
+        e.kivett--;
+    } else {
+        id.remove();
+    }
+
     MutatKartya();
 }

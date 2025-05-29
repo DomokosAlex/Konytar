@@ -1,5 +1,5 @@
 class Konyv {
-    constructor(id, cim, dij, kep, kivett, mennyiseg) {
+    constructor(id, cim, dij, kep, kivett, mennyiseg, osszmennyiseg) {
 
         //kötelező
         this.id = id;
@@ -11,27 +11,28 @@ class Konyv {
         this.kep = kep;
         this.kivett = parseInt(kivett);
         this.mennyiseg = parseInt(mennyiseg);
+        this.osszmennyiseg = parseInt(osszmennyiseg);
+
     }
 }
 
 // tömb tárolja a könyveket, index = id
 const konyvtarolo = [];
-
 function addBook() {
-    //bekéri az adatokat
     const cim = prompt("Cím:");
     const dij = prompt("Dij (Forint):");
     const kep = prompt("Fedő kép: ");
-    const mennyiseg = prompt("Mennyiség: ");
+    const kivett = 0; 
+    const osszmennyiseg = prompt("Összes példány: ");
+    const mennyiseg = osszmennyiseg;
 
-    //id-t ad neki, mivel 0 hosszuságu akkor 0 az elso id, utana 1 és tovább
     const id = konyvtarolo.length;
 
-    var van = false;
-    var upindex = 0;
+    let van = false;
+    let upindex = 0;
 
     for (let i = 0; i < konyvtarolo.length; i++) {
-        if (konyvtarolo[i].cim == cim) {
+        if (konyvtarolo[i].cim === cim) {
             van = true;
             upindex = i;
             break;
@@ -39,21 +40,15 @@ function addBook() {
     }
 
     if (van) {
-        konyvtarolo[upindex].mennyiseg += parseInt(mennyiseg);
-
+        konyvtarolo[upindex].osszmennyiseg += parseInt(osszmennyiseg);
     } else {
-        const konyv = new Konyv(id, cim, dij, kep, 0, mennyiseg);
+        const konyv = new Konyv(id, cim, dij, kep, kivett, mennyiseg, osszmennyiseg);
         konyvtarolo.push(konyv);
-
     }
 
-    //példányositás
-
-
-    //kilistázza a kártyákat
     MutatKartya();
-
 }
+
 
 function MutatKartya() {
 
@@ -81,9 +76,10 @@ function MutatKartya() {
                     <div class="card-body">
                         <h4 class="card-title">${e.cim}</h4>
                         <h5 class="card-title">Dij: ${e.dij}</h5>
-                        <h5 class="card-title">Mennyiség: ${e.mennyiseg}</h5>
+                        <h5 class="card-title">Kivett példádnyok: ${e.kivett}</h5>
+                        <h5 class="card-title">Összes példány: ${e.osszmennyiseg}</h5>
 
-                        <button onclick="Torol(${e.id})" class="btn btn-danger">Törlés</button>
+                        <button onclick="Torol(${e.id})" class="btn btn-danger"><span><i class="bi bi-trash3"></i></span> Törlés</button>
                     </div>
                 </div>
             `
@@ -99,8 +95,8 @@ function MutatKartya() {
                     <div class="card-body">
                         <h4 class="card-title">${e.cim}</h4>
                         <h5 class="card-title">Dij: ${e.dij}</h5>
-                        <h5 class="card-title">Mennyiség: ${e.mennyiseg}</h5>
-                        <button onclick="Kolcson(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Kiveszem</button>
+                        <h5 class="card-title">Példádnyok: ${e.mennyiseg}</h5>
+                        <button onclick="Kolcson(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger"><span><i class="bi bi-box-arrow-up"></i></span> Kiveszem</button>
                     </div>
                 </div>
             `
@@ -120,10 +116,10 @@ function MutatKartya() {
                     <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
                         <h4 class="card-title">${e.cim}</h4>
-                        <h5 class="card-title">Dij: ${e.dij}</h5>
-                        <h5 class="card-title">Kivett mennyisege: ${e.kivett}</h5>
+                        <h5 class="card-title">Díj: ${e.dij}</h5>
+                        <h5 class="card-title">Példádnyok: ${e.kivett}</h5>
 
-                        <button onclick="Visszaadom(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger">Visszaadom</button>
+                        <button onclick="Visszaadom(${"\'" + e.id + "konyv" + "\'"})" class="btn btn-danger"><span><i class="bi bi-box-arrow-down"></i></span> Visszaadom</button>
                     </div>
                 </div>
             `
@@ -186,7 +182,7 @@ function Kolcson(id) {
         e.mennyiseg--;
         e.kivett++;
     } else {
-        alert("Nincs több példány elérhető.");
+        alert("Nincs több elérhető példány.");
     }
 
     MutatKartya();

@@ -1,8 +1,3 @@
-
-
-
-
-
 function Admin() {
     const kivett = document.getElementById("kivett");
     const elerheto = document.getElementById("elerheto");

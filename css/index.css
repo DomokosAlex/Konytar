@@ -3,9 +3,12 @@ html,body{
     height:100%;
     width: 100%;
     font-family: "Poppins";
-    background: radial-gradient(rgb(50, 0, 0), rgb(22, 22, 22));
-      /* Make sure it covers the entire viewport */
+    background: radial-gradient(circle, rgb(50, 0, 0), rgb(22, 22, 22));
+background-position: center;
+
+
       height: 100%;
+      width: 100%;
 }
 
 

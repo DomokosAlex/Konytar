@@ -74,9 +74,9 @@ function MutatKartya() {
                 <div class="card my-3" style="width: 14rem;">
                     <img src="./img/${e.kep}.png" class="card-img-top" alt="konyv">
                     <div class="card-body">
-                        <h4 class="card-title">${e.cim}</h4>
+                        <h5 class="card-title">${e.cim}</h5>
                         <h5 class="card-title">Dij: ${e.dij}</h5>
-                        <h5 class="card-title">Kivett példádnyok: ${e.kivett}</h5>
+                        <h5 class="card-title">Kivett példádny: ${e.kivett}</h5>
                         <h5 class="card-title">Összes példány: ${e.osszmennyiseg}</h5>
 
                         <button onclick="Torol(${e.id})" class="btn btn-danger"><span><i class="bi bi-trash3"></i></span> Törlés</button>
